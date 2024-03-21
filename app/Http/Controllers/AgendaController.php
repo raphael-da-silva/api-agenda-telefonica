@@ -34,7 +34,7 @@ class AgendaController extends Controller
             'email' => 'required|email|unique:agenda,email,' . $id,
             'birth' => 'required|date',
             'cpf'   => 'required|digits:11|unique:agenda,cpf,' . $id,
-            'phone' => 'required|min:8'
+            'phone' => 'required|numeric|digits_between:8,9'
         ],[
             'name' => 'O nome do usuário é obrigatório',
             'email' => [
@@ -53,7 +53,8 @@ class AgendaController extends Controller
             ],
             'phone' => [
                 'required' => 'Número de telefone é obrigatório',
-                'min'      => 'O número deve ter no minimo 8 digitos'
+                'numeric'  => 'O telefone deve conter apenas números.',
+                'digits_between' => 'O número de telefone deve ter de 8 a 9 digitos.'
             ],
         ]);
     }
