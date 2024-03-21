@@ -19,7 +19,7 @@ class AgendaController extends Controller
         $input = $request->json()->all();
         $name  = $request->json('name');
 
-        $this->validateInput($request)->validate();
+        $this->validateInput($request);
         $agenda = AgendaModel::create($input);
 
         return response()->json([
@@ -27,36 +27,17 @@ class AgendaController extends Controller
         ], 201);
     }
 
-    private function validateInput(Request $request, int $id = null)
+    private function validateInput(Request $request, int $id = null): void
     {
-        return Validator::make($request->json()->all(), [
+        $validator = Validator::make($request->json()->all(), [
             'name'  => 'required',
             'email' => 'required|email|unique:agenda,email,' . $id,
             'birth' => 'required|date',
             'cpf'   => 'required|digits:11|unique:agenda,cpf,' . $id,
             'phone' => 'required|numeric|digits_between:8,9'
-        ],[
-            'name' => 'O nome do usuário é obrigatório',
-            'email' => [
-                'required' => 'O e-mail do usuario é obrigatório',
-                'unique'   => 'Este e-mail já esta sendo usado.',
-                'email'    => 'O e-mail é invalido'
-            ],
-            'birth' => [
-                'required' => 'Data de nascimento é obrigatória',
-                'date'     => 'A data informada é inválida'
-            ],
-            'cpf' => [
-                'required' => 'CPF é obrigatório',
-                'unique'   => 'Este CPF já esta sendo usado.',
-                'digits'   => 'CPF não tem o número de digitos esperados'
-            ],
-            'phone' => [
-                'required' => 'Número de telefone é obrigatório',
-                'numeric'  => 'O telefone deve conter apenas números.',
-                'digits_between' => 'O número de telefone deve ter de 8 a 9 digitos.'
-            ],
-        ]);
+        ], AgendaModel::getValidationMessages());
+
+        $validator->validate();
     }
 
     public function update(Request $request, int $id): JsonResponse
@@ -67,7 +48,7 @@ class AgendaController extends Controller
             throw new NotFoundHttpException('O registro não existe não existe.');
         }
 
-        $this->validateInput($request, $id)->validate();
+        $this->validateInput($request, $id);
 
         $agenda->name  = $request->json('name');
         $agenda->email = $request->json('email');
