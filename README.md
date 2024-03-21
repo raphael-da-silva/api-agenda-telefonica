@@ -25,8 +25,8 @@ O formato do json que deve ser enviado na requisição para realizar o insert e 
     "name": "Programador da Silva",
     "email": "email@usuario.com",
     "birth": "1994-10-30",
-    "cpf": "32323232323",
-    "phone": "999999999999"
+    "cpf": "12345678912",
+    "phone": "88889999"
 }
 ```
 
