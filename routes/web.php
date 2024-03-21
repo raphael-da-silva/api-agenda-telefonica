@@ -28,6 +28,4 @@ $router->put('/agenda/{id}', 'AgendaController@update');
 $router->delete('/agenda/{name}', 'AgendaController@delete');
 
 // Listagem de nomes
-$router->get('/agenda/relatorio', function() use ($router){
-    
-});
+$router->get('/agenda/relatorio', 'AgendaNamesController@index');
