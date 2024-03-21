@@ -25,9 +25,7 @@ $router->post('/agenda', 'AgendaController@post');
 $router->put('/agenda/{id}', 'AgendaController@update');
 
 // Deletar via nome
-$router->delete('/agenda/{name}', function() use ($router){
-    
-});
+$router->delete('/agenda/{name}', 'AgendaController@delete');
 
 // Listagem de nomes
 $router->get('/agenda/relatorio', function() use ($router){
