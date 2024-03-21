@@ -12,7 +12,9 @@ Os endpoints da API são os seguintes:
 
 * `/delete/{nome}` é rota que deleta um registro via método HTTP DELETE, deleta o registro do nome informado na URL.
 
-* `/agenda/reservas` é rota que lista os nomes (gerando um HTML) via método HTTP GET.
+* `/agenda/relatorio` é rota que lista os nomes (gerando um HTML) via método HTTP GET.
+
+* `/` a rota inicial tem uma página HTML de apresentação.
 
 ## JSON
 
