@@ -16,8 +16,8 @@ class AgendaController extends Controller
 
     public function post(Request $request): JsonResponse
     {
-        $input  = $request->json()->all();
-        $name   = $request->json('name');
+        $input = $request->json()->all();
+        $name  = $request->json('name');
 
         $this->validateInput($request)->validate();
         $agenda = AgendaModel::create($input);
@@ -33,8 +33,8 @@ class AgendaController extends Controller
             'name'  => 'required',
             'email' => 'required|email|unique:agenda,email,' . $id,
             'birth' => 'required|date',
-            'cpf'   => 'required|unique:agenda,cpf,' . $id,
-            'phone' => 'required'
+            'cpf'   => 'required|digits:11|unique:agenda,cpf,' . $id,
+            'phone' => 'required|min:8'
         ],[
             'name' => 'O nome do usuário é obrigatório',
             'email' => [
@@ -49,9 +49,11 @@ class AgendaController extends Controller
             'cpf' => [
                 'required' => 'CPF é obrigatório',
                 'unique'   => 'Este CPF já esta sendo usado.',
+                'digits'   => 'CPF não tem o número de digitos esperados'
             ],
             'phone' => [
                 'required' => 'Número de telefone é obrigatório',
+                'min'      => 'O número deve ter no minimo 8 digitos'
             ],
         ]);
     }
