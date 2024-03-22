@@ -14,6 +14,21 @@ class AgendaController extends Controller
     public function __construct()
     {}
 
+    private function validateInput(Request $request, int $id = null): void
+    {
+        $validator = Validator::make($request->json()->all(), [
+            'name'  => 'required',
+            'email' => 'required|email|unique:agenda,email,' . $id,
+            'birth' => 'required|date_format:Y-m-d',
+            'cpf'   => 'required|digits:11|unique:agenda,cpf,' . $id,
+            'phone' => 'required|numeric|digits_between:8,9'
+        ], AgendaModel::getValidationMessages());
+
+        if($validator->fails()){
+            $this->throwValidationException($request, $validator);
+        }
+    }
+
     public function post(Request $request): JsonResponse
     {
         $input = $request->json()->all();
@@ -25,19 +40,6 @@ class AgendaController extends Controller
         return response()->json([
             'created' => ($agenda != null) ? ucfirst($name) . ' foi colocado na agenda.' : 'Não foi possivel salvar.'
         ], 201);
-    }
-
-    private function validateInput(Request $request, int $id = null): void
-    {
-        $validator = Validator::make($request->json()->all(), [
-            'name'  => 'required',
-            'email' => 'required|email|unique:agenda,email,' . $id,
-            'birth' => 'required|date',
-            'cpf'   => 'required|digits:11|unique:agenda,cpf,' . $id,
-            'phone' => 'required|numeric|digits_between:8,9'
-        ], AgendaModel::getValidationMessages());
-
-        $validator->validate();
     }
 
     public function update(Request $request, int $id): JsonResponse

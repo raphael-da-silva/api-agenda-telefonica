@@ -29,7 +29,7 @@ class AgendaModel extends Model
             ],
             'birth' => [
                 'required' => 'Data de nascimento é obrigatória',
-                'date'     => 'A data informada é inválida'
+                'date_format' => 'A data informada é inválida'
             ],
             'cpf' => [
                 'required' => 'CPF é obrigatório',
