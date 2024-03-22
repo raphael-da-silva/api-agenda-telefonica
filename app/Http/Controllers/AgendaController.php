@@ -47,7 +47,7 @@ class AgendaController extends Controller
         $agenda = AgendaModel::find($id);
 
         if(!$agenda){
-            throw new NotFoundHttpException('O registro não existe não existe.');
+            throw new NotFoundHttpException('O registro não existe.');
         }
 
         $this->validateInput($request, $id);
