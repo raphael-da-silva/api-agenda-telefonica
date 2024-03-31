@@ -3,6 +3,7 @@
 namespace App\Models;
  
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 // Teste api - Raphael da Silva
 class AgendaModel extends Model
@@ -42,5 +43,10 @@ class AgendaModel extends Model
                 'digits_between' => 'O número de telefone deve ter de 8 a 9 digitos.'
             ],
         ];
+    }
+
+    public function getList(): Collection
+    {
+        return self::all();
     }
 }
