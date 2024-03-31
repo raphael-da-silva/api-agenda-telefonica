@@ -11,8 +11,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 // Teste - Raphael da Silva
 class AgendaController extends Controller
 {
-    public function __construct()
-    {}
+    public function __construct(
+        private AgendaModel $agendaModel
+    ){}
 
     private function validateInput(Request $request, int $id = null): void
     {
@@ -31,14 +32,13 @@ class AgendaController extends Controller
 
     public function post(Request $request): JsonResponse
     {
-        $input = $request->json()->all();
-        $name  = $request->json('name');
+        $name = $request->json('name');
 
         $this->validateInput($request);
-        $agenda = AgendaModel::create($input);
+        $created = $this->agendaModel->insertForAPI($request);
 
         return response()->json([
-            'created' => ($agenda != null) ? ucfirst($name) . ' foi colocado na agenda.' : 'Não foi possivel salvar.'
+            'created' =>  $created ? ucfirst($name) . ' foi colocado na agenda.' : 'Não foi possivel salvar.'
         ], 201);
     }
 
@@ -51,14 +51,7 @@ class AgendaController extends Controller
         }
 
         $this->validateInput($request, $id);
-
-        $agenda->name  = $request->json('name');
-        $agenda->email = $request->json('email');
-        $agenda->birth = $request->json('birth');
-        $agenda->cpf   = $request->json('cpf');
-        $agenda->phone = $request->json('phone');
-
-        $updated = $agenda->save();
+        $updated = $this->agendaModel->updateForAPI($agenda, $request);
 
         return response()->json([
             'updated' => $updated ? 'Dados atualizados!' : 'Não foi possivel atualizar.'

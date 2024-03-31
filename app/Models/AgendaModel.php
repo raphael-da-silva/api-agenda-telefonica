@@ -4,6 +4,7 @@ namespace App\Models;
  
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
 // Teste api - Raphael da Silva
 class AgendaModel extends Model
@@ -43,6 +44,26 @@ class AgendaModel extends Model
                 'digits_between' => 'O número de telefone deve ter de 8 a 9 digitos.'
             ],
         ];
+    }
+
+    public function insertForAPI(Request $request): bool
+    {
+        $agenda = AgendaModel::create(
+            $request->json()->all()
+        );
+
+        return ($agenda != null);
+    }
+
+    public function updateForAPI(self $agenda, Request $request): bool
+    {
+        $agenda->name  = $request->json('name');
+        $agenda->email = $request->json('email');
+        $agenda->birth = $request->json('birth');
+        $agenda->cpf   = $request->json('cpf');
+        $agenda->phone = $request->json('phone');
+
+        return $agenda->save();
     }
 
     public function getList(): Collection

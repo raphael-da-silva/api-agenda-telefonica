@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\AgendaNamesController;
 use App\Models\AgendaModel;
 use Laravel\Lumen\Application;
@@ -22,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(AgendaNamesController::class, function(Application $app){
             return new AgendaNamesController($app->make(AgendaModel::class));
+        });
+
+        $this->app->bind(AgendaController::class, function(Application $app){
+            return new AgendaController($app->make(AgendaModel::class));
         });
     }
 }
